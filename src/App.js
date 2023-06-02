@@ -2,22 +2,32 @@ import React , {useState} from 'react';
 import axios from 'axios';
 
 import './App.css';
+import Forecast from './components/forecast';
 
 function App() {
 
     const [data, setData] = useState({})
+    const  [forecast, setForecast] = useState({})
     const [location, setLocation] = useState("")
 
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=879d0343fc77e78f633b5793305bb3f9`
+
+    const forecast_url = `https://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=879d0343fc77e78f633b5793305bb3f9`
 
     const searchLocation = (event) =>{
       if(event.key === 'Enter'){
       axios.get(url).then((response) => 
       {
       setData(response.data)
-      console.log(response.data)
+      // console.log(response.data)
       }
       )
+      axios.get(forecast_url).then((response) =>{
+      setForecast(response.data)
+      console.log(response.data)    
+      }
+      )
+
       setLocation('')
     }
     }
@@ -34,7 +44,7 @@ function App() {
         type="text"
         />
       </div>
-
+<div className='Large_container'>
     <div className='container'>
 
       <div className='top'>
@@ -43,7 +53,14 @@ function App() {
           <p>Location : </p><div className='font'>{data.name}</div>
         </div>
         <div className='temp'>
-          { data.main ? <div className='temp2'><h1>{data.main.temp.toFixed()} ℃</h1><div className='ct'>(Current Temperature)</div></div> : null}
+          { data.main ? <div className='temp2'><h1>{data.main.temp.toFixed()} ℃</h1><div className='ct'>
+            {/* (Current Temperature) */}
+            <img
+          alt="weather"
+          className="weather-icon"
+          src={`icons/${data.weather[0].icon}.png`}
+        />
+            </div></div> : null}
           
         </div>
         <div className='description'>
@@ -70,8 +87,11 @@ function App() {
       </div>
 
 }
+
+
     </div>
-     
+    {forecast && <Forecast data={forecast}/>}
+    </div> 
     </div>
   );
 }

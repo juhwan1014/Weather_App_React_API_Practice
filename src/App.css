@@ -34,27 +34,39 @@ h1{
   z-index: -1;
 }
 
+.Large_container{
+ 
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  /* border: #fff solid; */
+}
+
 .container{
-  max-width: 700px;
+  /* max-width: 700px; */
+  width: 700px;
   height: 700px;
-  margin: auto;
+  /* margin: auto; */
+  margin-left: 20px;
   padding: 0.1rem;
   position: relative;
   top: 10%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  /* border: red solid; */
 }
 
 .App .top{
   width: 100%;
   margin: 1rem auto;
+  padding-left: 100px;
 }
 
 .App .description{
   display: flex;
   position: relative;
-  right: -50%;
+  /* right: -50%; */
 }
 
 .App .bottom{
@@ -62,7 +74,7 @@ h1{
   display: flex;
   justify-content: space-evenly;
   text-align: center;
-  width: 100%;
+  width: 90%;
   margin: 1rem auto;
   padding: 1rem;
   border-radius: 12px;
@@ -96,10 +108,15 @@ h1{
 }
 
 .ct{
- 
- font-size: 1.6rem;
+ /* font-size: 3.6rem; */
  margin-top: 5%;
- margin-left: 5%;
+ margin-left: 10%;
+}
+
+.weather-icon{
+  background-color: rgba(255,255,255,0.2);
+  border-radius: 25px;
+  
 }
 
 .location {
