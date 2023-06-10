@@ -11,9 +11,9 @@ const Forecast = ({data}) => {
 
 return (
     <div className="forecast_container">
-    <label className="title">Daily</label>
+    {data.list && <label className="title">Daily</label> }
     <Accordion allowZeroExpanded className="accordion">
-        {data.list.splice(0, 7).map((item, index) =>(
+        {data.list && data.list.slice(0, 7).map((item, index) =>(
             <AccordionItem key={index}>
                 <AccordionItemHeading>
                     <AccordionItemButton>

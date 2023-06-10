@@ -14,23 +14,38 @@ function App() {
 
     const forecast_url = `https://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=879d0343fc77e78f633b5793305bb3f9`
 
-    const searchLocation = (event) =>{
-      if(event.key === 'Enter'){
-      axios.get(url).then((response) => 
-      {
-      setData(response.data)
-      // console.log(response.data)
-      }
-      )
-      axios.get(forecast_url).then((response) =>{
-      setForecast(response.data)
-      console.log(response.data)    
-      }
-      )
 
-      setLocation('')
-    }
-    }
+    const searchLocation = async (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault(); // 기본 이벤트 처리 방지
+    
+        try {
+          const responsePromises = [
+            axios.get(url),
+            axios.get(forecast_url)
+          ];
+    
+          const [responseData, forecastResponse] = await Promise.all(responsePromises);
+    
+          setData(responseData.data);
+          setForecast(forecastResponse.data);
+        } catch (error) {
+          handleAxiosError();
+        }
+    
+        setLocation('');
+      }
+    };
+    
+    let isAlertShown = false; // 알림이 이미 표시되었는지 여부를 추적하는 변수
+    
+    const handleAxiosError = () => {
+      if (!isAlertShown) {
+        alert('You entered invalid input, please enter again the valid location name !');
+        isAlertShown = true; // 알림을 표시했음을 표시
+      }
+    };
+  
 
   return (
     <div className="App">
@@ -46,8 +61,14 @@ function App() {
       </div>
 <div className='Large_container'>
     <div className='container'>
+    {!data.name && <div className='head'>
+      Hi ~ 🤗 I'm Weather ForeCast Application! Please, Enter the location you want to find ...
+      </div>}
+      {!data.name && <div className='tail'>
+      ( If you search for an invalid location name, an error message will appear )
+      </div>}
 
-      <div className='top'>
+    {data.name && <div className='top'>
 
         <div className='location'>
           <p>Location : </p><div className='font'>{data.name}</div>
@@ -68,8 +89,9 @@ function App() {
         { data.weather ? <div className='font'>{data.weather[0].description}</div> : null}
         </div>
       </div>
+}
 
-      {data.name !== undefined &&
+      {data.name  &&
       <div className='bottom'>
         <div className='feels'>
         { data.main ? <p>{data.main.feels_like.toFixed()}℃</p> : null}
